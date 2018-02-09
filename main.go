@@ -26,16 +26,18 @@ func main() {
 	for {
 		fname := getFileName()
 
-		fmt.Println(fname)
-		f, _ := os.OpenFile(fname, os.O_RDONLY|os.O_CREATE, 0644)
-		f.Close()
-
+		makeSureFileExist(fname)
 		appendToFile(fname, "hello semua\n")
 
 		fmt.Println("sleeping...")
 		//time.Sleep(2 * time.Second) // or runtime.Gosched() or similar per @misterbee
 	}
 
+}
+
+func makeSureFileExist(fname string) {
+	f, _ := os.OpenFile(fname, os.O_RDONLY|os.O_CREATE, 0644)
+	f.Close()
 }
 
 func appendToFile(filename string, text string) {
