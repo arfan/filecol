@@ -27,11 +27,28 @@ func main() {
 		fname := getFileName()
 
 		fmt.Println(fname)
+		f, _ := os.OpenFile(fname, os.O_RDONLY|os.O_CREATE, 0644)
+		f.Close()
+
+		appendToFile(fname, "hello semua\n")
 
 		fmt.Println("sleeping...")
-		time.Sleep(2 * time.Second) // or runtime.Gosched() or similar per @misterbee
+		//time.Sleep(2 * time.Second) // or runtime.Gosched() or similar per @misterbee
 	}
 
+}
+
+func appendToFile(filename string, text string) {
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString(text); err != nil {
+		panic(err)
+	}
 }
 
 func getFileName() string {
